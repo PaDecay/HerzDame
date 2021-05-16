@@ -3,6 +3,7 @@ package com.company.core.domain;
 public class Spiel {
 
     private final SpielerRunde spielerRunde;
+
     private boolean karteWurdeGelegt = false; //TODO besser machen
     private final Kartensammlung zugStapel;
     private final Kartensammlung ablageStapel;
@@ -27,8 +28,8 @@ public class Spiel {
         return new Spiel(spielerRunde, spielKarten, ablageStapel);
     }
 
-    public void karteLegen(Karte karte) {
-        if (karteKannGelegtWerden(karte)) {
+    public void karteLegen(int spielerPosition, Karte karte) {
+        if (karteKannGelegtWerden(spielerPosition, karte)) {
             ablageStapel.hinzufuegen(karte);
             spielerRunde.getSpielerAmZug().vonHandkartenEntnehmen(karte);
             karteWurdeGelegt = true;
@@ -39,6 +40,7 @@ public class Spiel {
         if (!karteWurdeGelegt) {
             spielerRunde.getSpielerAmZug().zuHandkartenHinzufuegen(zugStapel.entnehmeKarten(1)); //TODO leerer zugStapel
         }
+
         karteWurdeGelegt = false;
         spielerRunde.naechsterSpieler();
     }
@@ -55,8 +57,11 @@ public class Spiel {
         return spielerRunde.getPositionIstAmZug();
     }
 
-    private boolean karteKannGelegtWerden(Karte karte) {
-        return karte.hatSelbesSymbol(ablageStapel.zuletztGelegteKarte())
+    private boolean karteKannGelegtWerden(int spielerPosition, Karte karte) {
+        boolean istAmZug = this.spielerRunde.getPositionIstAmZug() == spielerPosition;
+        boolean istGueltigerZug = karte.hatSelbesSymbol(ablageStapel.zuletztGelegteKarte())
                 || karte.hatSelbenRang(ablageStapel.zuletztGelegteKarte());
+
+        return  istAmZug && istGueltigerZug;
     }
 }

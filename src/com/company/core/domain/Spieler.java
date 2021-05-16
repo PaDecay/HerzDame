@@ -3,9 +3,12 @@ package com.company.core.domain;
 public class Spieler {
 
     public static int ANZAHL_STARTKARTEN = 15;
+
+    private int position;
     private final Kartensammlung handkarten;
 
-    public Spieler() {
+    public Spieler(int position) {
+        this.position = position;
         this.handkarten = Kartensammlung.leereSammlung();
     }
 
@@ -19,5 +22,9 @@ public class Spieler {
 
     public Kartensammlung getHandkarten() {
         return this.handkarten;
+    }
+
+    public int getPosition() {
+        return position;
     }
 }

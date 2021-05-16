@@ -14,7 +14,6 @@ public class Client implements Runnable {
 
     public Client(String ipToConnect, int portToConnect) throws IOException {
         this.socket = new Socket(ipToConnect, portToConnect);
-
         this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
@@ -24,7 +23,9 @@ public class Client implements Runnable {
         while (true) {
             ViewData viewData = null;
             try {
+                System.out.println("aa");
                 viewData = (ViewData) objectInputStream.readObject();
+                System.out.println("bb");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -47,6 +48,4 @@ public class Client implements Runnable {
         System.out.println("Spieler am Zug: ");
         System.out.println(viewData.spielerAmZug);
     }
-
-
 }

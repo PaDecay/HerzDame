@@ -3,6 +3,9 @@ package com.company.infrastructure;
 import com.company.core.application.*;
 import com.company.core.application.ViewModels.ViewData;
 import com.company.core.domain.Karte;
+import com.company.core.domain.Spiel;
+import com.company.core.domain.Spieler;
+import com.company.core.domain.SpielerRunde;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -10,86 +13,57 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.Objects;
 
-public class Server implements Runnable {
+public class Server implements Runnable{
 
     private ServerSocket serverSocket;
-    private Socket socket;
+   // private Socket socket;
 
-    private DataInputStream dataInputStream;
-    private DataOutputStream dataOutputStream;
-    private ObjectOutputStream objectOutputStream;
 
     private StarteNeuesSpiel starteNeuesSpiel;
     private LegeKarte legeKarte;
 
-    private GetViewData getViewData;
-    private GetServerReadModel getServerReadModel;
-    private int spieleranzahl;
+    private final GetViewData getViewData;
 
     private SpielRepository inMemorySpielRepository;
+    private ClientHandlerThread[] clientHandlerThreads;
+    private int spieleranzahl;
 
     public Server(int port, int spieleranzahl) throws IOException {
-
+        //Setup sockets
         this.serverSocket = new ServerSocket(port);
-        this.serverSocket.accept();
 
-        for(int i = 0; i < spieleranzahl; i++) {
-        }
-
-
-        this.dataInputStream = new DataInputStream(socket.getInputStream());
-        this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
+        // Setup application services TODO use service container
         this.inMemorySpielRepository = new InMemorySpielRepository();
-
-        //TODO use service container
         this.starteNeuesSpiel = new StarteNeuesSpiel(this.inMemorySpielRepository);
         this.legeKarte = new LegeKarte(this.inMemorySpielRepository);
         this.getViewData = new GetViewData(this.inMemorySpielRepository);
+        starteNeuesSpiel.invoke(spieleranzahl);
+        //Setup client-threads
+        this.clientHandlerThreads = new ClientHandlerThread[spieleranzahl];
+
         this.spieleranzahl = spieleranzahl;
     }
 
     @Override
     public void run() {
-        starteNeuesSpiel.invoke(spieleranzahl);
-
         try {
-            runGameLoop();
+            for(int spielerPos = 0; spielerPos < spieleranzahl; spielerPos++) {
+                ClientHandlerThread c = null; // TODO remove circular dependency
+                c = new ClientHandlerThread(serverSocket, spielerPos, this.legeKarte, this);
+                c.start();
+                clientHandlerThreads[spielerPos] = c;
+            }
+
+            sendViewDataToAllClients();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void runGameLoop() throws IOException {
-        sendViewDataToAllClients();
-        while (true) {
-            String clientInput = this.dataInputStream.readUTF();
-            Karte zuLegendeKarte = inputNachKarte(clientInput);
-            legeKarte.invoke(zuLegendeKarte);
-            sendViewDataToAllClients();
-
+    public void sendViewDataToAllClients() throws IOException {
+        for (ClientHandlerThread c : clientHandlerThreads) {
+            ViewData clientViewData = getViewData.invoke(c.getSpielerPosition());
+            c.sendViewData(clientViewData);
         }
-    }
-
-    private void sendViewDataToAllClients() throws IOException {
-        ViewData clientViewData = getViewData.invoke(1);
-        this.objectOutputStream.writeObject(clientViewData);
-    }
-
-    private Karte inputNachKarte(String karte) {
-        String symbol = String.valueOf(karte.charAt(0));
-        String rang = String.valueOf(karte.charAt(1));
-
-        return new Karte(getKeyByValue(ViewData.SYMBOL_MAP, symbol), getKeyByValue(ViewData.RANG_MAP, rang));
-    }
-
-    private static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 }

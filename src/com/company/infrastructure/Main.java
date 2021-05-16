@@ -19,8 +19,8 @@ public class Main {
 
         if (input.charAt(0) == 'E') {
             Server server = new Server(SERVER_PORT, Character.getNumericValue(input.charAt(1)));
-            Thread thread = new Thread(server);
-            thread.start();
+            Thread serverThread = new Thread(server);
+            serverThread.start();
 
             Client host = new Client("127.0.0.1", SERVER_PORT);
             Thread hostTread = new Thread(host);

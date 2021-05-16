@@ -15,7 +15,7 @@ public class SpielerRunde {
         Spieler[] spielerRunde = new Spieler[spieleranzahl];
 
         for (int i = 0; i < spieleranzahl; i++) {
-            spielerRunde[i] = new Spieler();
+            spielerRunde[i] = new Spieler(i);
         }
 
         return new SpielerRunde(spielerRunde);

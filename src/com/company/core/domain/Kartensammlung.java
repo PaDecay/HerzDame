@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Kartensammlung {
 
-    private LinkedList<Karte> karten;
+    private final LinkedList<Karte> karten;
 
     private Kartensammlung(LinkedList<Karte> karten) {
         this.karten = karten;
