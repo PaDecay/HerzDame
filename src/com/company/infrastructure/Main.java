@@ -1,5 +1,8 @@
 package com.company.infrastructure;
 
+import com.company.infrastructure.client.Client;
+import com.company.infrastructure.server.Server;
+
 import java.io.*;
 import java.util.Scanner;
 
@@ -22,18 +25,15 @@ public class Main {
             Thread serverThread = new Thread(server);
             serverThread.start();
 
-            Client host = new Client("127.0.0.1", SERVER_PORT);
-            Thread hostTread = new Thread(host);
-            hostTread.start();
+            new Client("127.0.0.1", SERVER_PORT);
         }
+
 
         if (input.equals("B")) {
             System.out.println("Server IP angeben ");
             String serverIp = in.nextLine();
 
-            Client client = new Client(serverIp, SERVER_PORT);
-            Thread clientThread = new Thread(client);
-            clientThread.start();
+            new Client(serverIp, SERVER_PORT);
         }
 
         if (input.equals("V")) {

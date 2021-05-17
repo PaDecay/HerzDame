@@ -1,20 +1,16 @@
-package com.company.infrastructure;
+package com.company.infrastructure.client;
 
 import com.company.core.application.ViewModels.ViewData;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 
-public class Client implements Runnable {
+public class ResponseHandler implements Runnable {
 
-    private Socket socket;
+    private final ObjectInputStream objectInputStream;
 
-    private DataOutputStream dataOutputStream;
-    private ObjectInputStream objectInputStream;
-
-    public Client(String ipToConnect, int portToConnect) throws IOException {
-        this.socket = new Socket(ipToConnect, portToConnect);
-        this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+    public ResponseHandler(Socket socket) throws IOException {
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
     }
 
@@ -23,9 +19,9 @@ public class Client implements Runnable {
         while (true) {
             ViewData viewData = null;
             try {
-                System.out.println("aa");
+                System.out.println("8");
                 viewData = (ViewData) objectInputStream.readObject();
-                System.out.println("bb");
+                System.out.println("9");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

@@ -1,17 +1,11 @@
-package com.company.infrastructure;
+package com.company.infrastructure.server;
 
 import com.company.core.application.*;
 import com.company.core.application.ViewModels.ViewData;
-import com.company.core.domain.Karte;
-import com.company.core.domain.Spiel;
-import com.company.core.domain.Spieler;
-import com.company.core.domain.SpielerRunde;
+import com.company.infrastructure.InMemorySpielRepository;
 
 import java.io.*;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Map;
-import java.util.Objects;
 
 public class Server implements Runnable{
 

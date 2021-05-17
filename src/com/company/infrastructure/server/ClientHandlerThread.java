@@ -1,8 +1,9 @@
-package com.company.infrastructure;
+package com.company.infrastructure.server;
 
 import com.company.core.application.LegeKarte;
 import com.company.core.application.ViewModels.ViewData;
 import com.company.core.domain.Karte;
+import com.company.infrastructure.server.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -50,7 +51,6 @@ public class ClientHandlerThread extends Thread
     }
 
     public void sendViewData(ViewData viewData) throws IOException {
-
         objectOutputStream.writeObject(viewData);
     }
 
