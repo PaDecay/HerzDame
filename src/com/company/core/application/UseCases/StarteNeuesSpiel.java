@@ -1,5 +1,6 @@
-package com.company.core.application;
+package com.company.core.application.UseCases;
 
+import com.company.core.application.SpielRepository;
 import com.company.core.domain.Spiel;
 
 public class StarteNeuesSpiel {

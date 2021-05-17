@@ -1,8 +1,10 @@
 package com.company.infrastructure.server;
 
 import com.company.core.application.*;
+import com.company.core.application.UseCases.LegeKarte;
+import com.company.core.application.UseCases.StarteNeuesSpiel;
 import com.company.core.application.ViewModels.ViewData;
-import com.company.infrastructure.InMemorySpielRepository;
+import com.company.infrastructure.repository.InMemorySpielRepository;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -10,8 +12,6 @@ import java.net.ServerSocket;
 public class Server implements Runnable{
 
     private ServerSocket serverSocket;
-   // private Socket socket;
-
 
     private StarteNeuesSpiel starteNeuesSpiel;
     private LegeKarte legeKarte;

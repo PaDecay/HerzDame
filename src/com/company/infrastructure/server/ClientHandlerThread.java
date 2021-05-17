@@ -1,9 +1,8 @@
 package com.company.infrastructure.server;
 
-import com.company.core.application.LegeKarte;
+import com.company.core.application.UseCases.LegeKarte;
 import com.company.core.application.ViewModels.ViewData;
 import com.company.core.domain.Karte;
-import com.company.infrastructure.server.Server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

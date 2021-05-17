@@ -1,4 +1,4 @@
-package com.company.infrastructure;
+package com.company.infrastructure.repository;
 
 import com.company.core.application.SpielRepository;
 import com.company.core.domain.Spiel;
