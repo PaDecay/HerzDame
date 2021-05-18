@@ -1,6 +1,7 @@
 package com.company.infrastructure.server;
 
 import com.company.core.application.*;
+import com.company.core.application.UseCases.BeendeZug;
 import com.company.core.application.UseCases.LegeKarte;
 import com.company.core.application.UseCases.StarteNeuesSpiel;
 import com.company.core.application.ViewModels.ViewData;
@@ -15,6 +16,7 @@ public class Server implements Runnable{
 
     private StarteNeuesSpiel starteNeuesSpiel;
     private LegeKarte legeKarte;
+    private BeendeZug beendeZug;
 
     private final GetViewData getViewData;
 
@@ -28,9 +30,10 @@ public class Server implements Runnable{
 
         // Setup application services TODO use service container
         this.inMemorySpielRepository = new InMemorySpielRepository();
-        this.starteNeuesSpiel = new StarteNeuesSpiel(this.inMemorySpielRepository);
-        this.legeKarte = new LegeKarte(this.inMemorySpielRepository);
-        this.getViewData = new GetViewData(this.inMemorySpielRepository);
+        this.starteNeuesSpiel = new StarteNeuesSpiel(inMemorySpielRepository);
+        this.legeKarte = new LegeKarte(inMemorySpielRepository);
+        this.beendeZug = new BeendeZug(inMemorySpielRepository);
+        this.getViewData = new GetViewData(inMemorySpielRepository);
         starteNeuesSpiel.invoke(spieleranzahl);
         //Setup client-threads
         this.clientHandlerThreads = new ClientHandlerThread[spieleranzahl];
@@ -43,7 +46,7 @@ public class Server implements Runnable{
         try {
             for(int spielerPos = 0; spielerPos < spieleranzahl; spielerPos++) {
                 ClientHandlerThread c = null; // TODO remove circular dependency
-                c = new ClientHandlerThread(serverSocket, spielerPos, this.legeKarte, this);
+                c = new ClientHandlerThread(serverSocket, spielerPos, this.legeKarte, this.beendeZug, this);
                 c.start();
                 clientHandlerThreads[spielerPos] = c;
             }

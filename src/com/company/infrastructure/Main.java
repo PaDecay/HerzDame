@@ -30,7 +30,7 @@ public class Main {
 
 
         if (input.equals("B")) {
-            System.out.println("Server IP angeben ");
+            System.out.println("Server IP angeben");
             String serverIp = in.nextLine();
 
             new Client(serverIp, SERVER_PORT);

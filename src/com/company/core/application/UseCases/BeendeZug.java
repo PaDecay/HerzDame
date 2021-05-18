@@ -13,7 +13,7 @@ public class BeendeZug {
 
     public void invoke() {
         Spiel spiel = this.repository.ladeSpiel();
-        spiel.zugBeenden();
+        spiel.beendeZug();
         this.repository.speicherSpielAb(spiel);
     }
 }

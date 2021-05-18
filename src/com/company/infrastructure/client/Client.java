@@ -1,7 +1,5 @@
 package com.company.infrastructure.client;
 
-import com.company.core.application.ViewModels.ViewData;
-
 import java.io.*;
 import java.net.Socket;
 

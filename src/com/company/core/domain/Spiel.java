@@ -32,16 +32,17 @@ public class Spiel {
         if (karteKannGelegtWerden(spielerPosition, karte)) {
             ablageStapel.hinzufuegen(karte);
             spielerRunde.getSpielerAmZug().vonHandkartenEntnehmen(karte);
-            karteWurdeGelegt = true;
+            spielerRunde.naechsterSpieler();
+            spielerRunde.spielerAmZugHatKarteGelegt = true;
         }
     }
 
-    public void zugBeenden() {
+    public void beendeZug() {
         if (!karteWurdeGelegt) {
             spielerRunde.getSpielerAmZug().zuHandkartenHinzufuegen(zugStapel.entnehmeKarten(1)); //TODO leerer zugStapel
         }
 
-        karteWurdeGelegt = false;
+        spielerRunde.spielerAmZugHatKarteGelegt = false;
         spielerRunde.naechsterSpieler();
     }
 

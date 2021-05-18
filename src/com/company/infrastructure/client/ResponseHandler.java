@@ -19,9 +19,7 @@ public class ResponseHandler implements Runnable {
         while (true) {
             ViewData viewData = null;
             try {
-                System.out.println("8");
                 viewData = (ViewData) objectInputStream.readObject();
-                System.out.println("9");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }

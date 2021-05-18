@@ -1,5 +1,6 @@
 package com.company.infrastructure.server;
 
+import com.company.core.application.UseCases.BeendeZug;
 import com.company.core.application.UseCases.LegeKarte;
 import com.company.core.application.ViewModels.ViewData;
 import com.company.core.domain.Karte;
@@ -23,15 +24,17 @@ public class ClientHandlerThread extends Thread
 
     private final int spielerPosition;
     private final LegeKarte legeKarte;
+    private final BeendeZug beendeZug;
 
     private final Server server;
 
-    public ClientHandlerThread(ServerSocket serverSocket, int spielerPosition, LegeKarte legeKarte, Server server) throws IOException {
+    public ClientHandlerThread(ServerSocket serverSocket, int spielerPosition, LegeKarte legeKarte, BeendeZug beendeZug, Server server) throws IOException {
         this.socket = serverSocket.accept();
         this.dataInputStream = new DataInputStream(socket.getInputStream());
         this.objectOutputStream= new ObjectOutputStream(socket.getOutputStream());
 
         this.legeKarte = legeKarte;
+        this.beendeZug = beendeZug;
         this.spielerPosition = spielerPosition;
         this.server = server; //TODO remove circular dependency;
     }
@@ -40,6 +43,13 @@ public class ClientHandlerThread extends Thread
         try {
             while (true) {
                 String clientInput = dataInputStream.readUTF();
+
+                if(clientInput.equals("e")) {
+                    beendeZug.invoke();
+                    server.sendViewDataToAllClients();
+                    continue;
+                }
+
                 Karte zuLegendeKarte = inputNachKarte(clientInput);
                 legeKarte.invoke(spielerPosition, zuLegendeKarte);
                 server.sendViewDataToAllClients();

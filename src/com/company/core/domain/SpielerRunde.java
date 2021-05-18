@@ -5,10 +5,12 @@ public class SpielerRunde {
     private final Spieler[] spielerRunde;
 
     private int positionIstAmZug;
+    public boolean spielerAmZugHatKarteGelegt;
 
     public SpielerRunde(Spieler[] spielerRunde) {
         this.spielerRunde = spielerRunde;
         this.positionIstAmZug = 0;
+        this.spielerAmZugHatKarteGelegt = false;
     }
 
     public static SpielerRunde mitSpieleranzahl(int spieleranzahl) {
