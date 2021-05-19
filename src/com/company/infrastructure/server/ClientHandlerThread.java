@@ -28,7 +28,13 @@ public class ClientHandlerThread extends Thread
 
     private final Server server;
 
-    public ClientHandlerThread(ServerSocket serverSocket, int spielerPosition, LegeKarte legeKarte, BeendeZug beendeZug, Server server) throws IOException {
+    public ClientHandlerThread(
+            ServerSocket serverSocket,
+            int spielerPosition,
+            LegeKarte legeKarte,
+            BeendeZug beendeZug,
+            Server server
+    ) throws IOException {
         this.socket = serverSocket.accept();
         this.dataInputStream = new DataInputStream(socket.getInputStream());
         this.objectOutputStream= new ObjectOutputStream(socket.getOutputStream());

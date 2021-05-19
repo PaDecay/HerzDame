@@ -2,10 +2,10 @@ package com.company.core.domain;
 
 public class SpielerRunde {
 
-    private final Spieler[] spielerRunde;
-
-    private int positionIstAmZug;
     public boolean spielerAmZugHatKarteGelegt;
+
+    private final Spieler[] spielerRunde;
+    private int positionIstAmZug;
 
     public SpielerRunde(Spieler[] spielerRunde) {
         this.spielerRunde = spielerRunde;

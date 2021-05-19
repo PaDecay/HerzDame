@@ -14,7 +14,7 @@ public class LegeKarte {
 
     public void invoke(int spielerPosition, Karte karte) {
         Spiel spiel = repository.ladeSpiel();
-        spiel.karteLegen(spielerPosition, karte);
+        spiel.legeKarte(spielerPosition, karte);
         repository.speicherSpielAb(spiel);
     }
 }

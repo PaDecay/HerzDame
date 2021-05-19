@@ -4,7 +4,6 @@ public class Spiel {
 
     private final SpielerRunde spielerRunde;
 
-    private boolean karteWurdeGelegt = false; //TODO besser machen
     private final Kartensammlung zugStapel;
     private final Kartensammlung ablageStapel;
 
@@ -28,7 +27,7 @@ public class Spiel {
         return new Spiel(spielerRunde, spielKarten, ablageStapel);
     }
 
-    public void karteLegen(int spielerPosition, Karte karte) {
+    public void legeKarte(int spielerPosition, Karte karte) {
         if (karteKannGelegtWerden(spielerPosition, karte)) {
             ablageStapel.hinzufuegen(karte);
             spielerRunde.getSpielerAmZug().vonHandkartenEntnehmen(karte);
@@ -38,7 +37,7 @@ public class Spiel {
     }
 
     public void beendeZug() {
-        if (!karteWurdeGelegt) {
+        if (!spielerRunde.spielerAmZugHatKarteGelegt) {
             spielerRunde.getSpielerAmZug().zuHandkartenHinzufuegen(zugStapel.entnehmeKarten(1)); //TODO leerer zugStapel
         }
 
